@@ -1,4 +1,4 @@
-service: workshop-yancui
+service: workshop-kotovs
 
 plugins:
   - serverless-pseudo-parameters
@@ -6,8 +6,10 @@ plugins:
 provider:
   name: aws
   runtime: nodejs8.10
+  profile: serverless
   stage: dev
   region: eu-west-1
+  versionFunctions: false
   tags:
     TEAM: test
 
@@ -28,6 +30,10 @@ provider:
       Action: sns:Publish
       Resource: 
         Ref: restaurantNotificationTopic
+#    - Effect: Allow
+#      Action:
+#        - xray:PutTraceSegments
+#        - xray:PutTelemetryRecords
 
 functions:
   get-index:
@@ -100,7 +106,7 @@ resources:
     restaurantsTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: restaurants-${self:provider.stage}-yancui
+        TableName: restaurants-${self:provider.stage}-kotovs
         AttributeDefinitions:
           - AttributeName: name
             AttributeType: S
@@ -114,20 +120,20 @@ resources:
     orderEventsStream:
       Type: AWS::Kinesis::Stream
       Properties: 
-        # Name: orders-${self:provider.stage}-yancui
-        Name: ${ssm:/workshop-yancui/dev/stream_name}
+        Name: orders-${self:provider.stage}-kotovs
+        # Name: ${ssm:/workshop-kotovs/dev/stream_name}
         ShardCount: 1
 
     restaurantNotificationTopic:
       Type: AWS::SNS::Topic
       Properties: 
-        DisplayName: restaurants-${self:provider.stage}-yancui
-        TopicName: restaurants-${self:provider.stage}-yancui
+        DisplayName: restaurants-${self:provider.stage}-kotovs
+        TopicName: restaurants-${self:provider.stage}-kotovs
 
     mySubscription:
       Type: AWS::SNS::Subscription
       Properties:
-        Endpoint: <enter your email>
+        Endpoint: kssgel@yandex.ru
         Protocol: email
         TopicArn: 
           Ref: restaurantNotificationTopic            

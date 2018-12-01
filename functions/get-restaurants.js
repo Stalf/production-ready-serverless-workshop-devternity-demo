@@ -5,12 +5,14 @@ const defaultResults = process.env.defaultResults || 8
 const tableName = process.env.restaurants_table
 
 const getRestaurants = async (count) => {
+  console.log('loading getRestaurants from dynamodb...')
   const req = {
     TableName: tableName,
     Limit: count
   }
 
   const resp = await dynamodb.scan(req).promise()
+  console.log('finished getRestaurants...')
   return resp.Items
 }
 
