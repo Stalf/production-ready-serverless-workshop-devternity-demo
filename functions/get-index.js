@@ -6,6 +6,7 @@ const Log = require('../lib/log')
 const restaurantsApiRoot = process.env.restaurants_api
 const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 const ordersApiRoot = process.env.orders_api
+const wrap = require('../lib/wrapper')
 
 let html
 
@@ -24,7 +25,7 @@ const getRestaurants = async () => {
   return (await httpReq).body
 }
 
-module.exports.handler = async (event, context) => {
+module.exports.handler = wrap(async (event, context) => {
   const template = loadHtml()
   const restaurants = await getRestaurants()
   const dayOfWeek = days[new Date().getDay()]
@@ -44,4 +45,4 @@ module.exports.handler = async (event, context) => {
   }
 
   return response
-}
+})
