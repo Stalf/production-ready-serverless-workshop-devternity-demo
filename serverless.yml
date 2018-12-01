@@ -105,7 +105,7 @@ resources:
     restaurantsTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: restaurants-${self:provider.stage}-kotovs
+        TableName: ${ssm:/${self:service}/${self:provider.stage}/table_name}
         AttributeDefinitions:
           - AttributeName: name
             AttributeType: S
@@ -119,15 +119,14 @@ resources:
     orderEventsStream:
       Type: AWS::Kinesis::Stream
       Properties: 
-        Name: orders-${self:provider.stage}-kotovs
-        # Name: ${ssm:/workshop-kotovs/dev/stream_name}
+        Name: ${ssm:/${self:service}/${self:provider.stage}/stream_name}
         ShardCount: 1
 
     restaurantNotificationTopic:
       Type: AWS::SNS::Topic
       Properties: 
-        DisplayName: restaurants-${self:provider.stage}-kotovs
-        TopicName: restaurants-${self:provider.stage}-kotovs
+        DisplayName: ${ssm:/${self:service}/${self:provider.stage}/restaurant_topic_name}
+        TopicName: ${ssm:/${self:service}/${self:provider.stage}/restaurant_topic_name}
 
     mySubscription:
       Type: AWS::SNS::Subscription
