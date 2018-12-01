@@ -119,7 +119,7 @@ resources:
     orderEventsStream:
       Type: AWS::Kinesis::Stream
       Properties: 
-        Name: ${ssm:/${self:service}/${self:provider.stage}/stream_name}
+        Name: ${ssm:/${self:service}/${self:provider.stage}/stream-name}
         ShardCount: 1
 
     restaurantNotificationTopic:
